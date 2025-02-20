@@ -558,7 +558,24 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              completion = {
+                -- Stop annoying traits that apply to basically every type in
+                --  existence from clogging completion suggestions
+                excludeTraits = {
+                  'owo_colors::OwoColorize',
+                  'color_eyre::owo_colors::OwoColorize',
+                  'std::hash::Hash',
+                  'std::cmp::PartialOrd',
+                  'std::cmp::PartialEq',
+                  'std::clone::Clone',
+                },
+              },
+            },
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -574,6 +591,9 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             Lua = {
+              runtime = {
+                version = 'LuaJIT',
+              },
               completion = {
                 callSnippet = 'Replace',
               },
