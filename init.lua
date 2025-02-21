@@ -13,7 +13,8 @@
     which is very useful when you're not exactly sure of what you're looking for.
 
 --]]
--- TODO:Set shell to use for ! commands. Currently uses cmd.exe See :h SHELL.
+-- TODO:Set shell to use for ! commands. Currently uses powershell.exe See :h SHELL.
+vim.opt.shellcmdflag = '-c'
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
