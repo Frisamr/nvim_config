@@ -31,8 +31,7 @@ vim.g.loaded_node_provider = 0
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
+-- NOTE: For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.opt.number = true
@@ -83,7 +82,8 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+-- PNOTE: maybe this should be different on different devices/screen sizes?
+vim.opt.scrolloff = 7
 
 -- Use Powershell instead of cmd.exe
 vim.opt.shell = 'powershell.exe'
@@ -96,7 +96,7 @@ vim.opt.shell = 'powershell.exe'
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
--- PNOTE: All of these excep the <leader>q mapping were added by me from the old kickstart config.
+-- PNOTE: All of these except the <leader>q mapping were added by me from the old kickstart config.
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -131,7 +131,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Enter insert a new line above the current line without entering insert mode.
 -- PNOTE: I wanted to add Shift+Enter as well, but I couldn't get it to work
 -- TODO: I need to confirm this works when creating a new buffer. I
---  have only confirm it works when opening Neovim.
+--  have only confirmed it works when opening Neovim.
 vim.api.nvim_create_autocmd({ 'BufNew', 'VimEnter' }, {
   desc = 'Create Enter keymap in normal buffers',
   group = vim.api.nvim_create_augroup('create-buffer-local-keymaps', { clear = false }),
@@ -167,17 +167,10 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
--- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
-  -- Use `opts = {}` to force a plugin to be loaded.
-  --
+  -- NOTE: Use `opts = {}` to force a plugin to be loaded.
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -385,7 +378,7 @@ require('lazy').setup({
     --
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
-    -- PNOTE: added 'luvit-meta as a dependency because Lazy wasn't loading it
+    -- PNOTE: added 'luvit-meta' as a dependency because Lazy wasn't loading it
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
@@ -625,6 +618,8 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        ensure_installed = { 'lua_ls' },
+        automatic_installation = { exclude = { 'rust_analyzer' } },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -824,7 +819,10 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       signs = false,
-      keywords = { SAFETY = { icon = ' ', color = 'hint' } },
+      keywords = {
+        PNOTE = { color = 'info' },
+        SAFETY = { icon = ' ', color = 'hint' },
+      },
     },
   },
 
@@ -872,7 +870,7 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       -- PNOTE: I have removed 'bash' and 'hmtl' because I don't really use them. I should maybe add powershell.
-      ensure_installed = { 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'c', 'zig' },
+      ensure_installed = { 'diff', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'c', 'zig' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -950,7 +948,7 @@ local tmp_filename_prefix = 'main.shada.tmp.'
 for _, file in ipairs(files) do
   local file_name = vim.fn.fnamemodify(file, ':t')
   if file_name == 'main.shada' then
-    -- skip your main.shada file
+    -- skip the main.shada file
     goto continue
   end
   if file_name:sub(1, #tmp_filename_prefix) == tmp_filename_prefix then
@@ -959,7 +957,7 @@ for _, file in ipairs(files) do
   ::continue::
 end
 if tmp_files_exist then
-  vim.notify('WARNING: main.shada.tmp.X files exist.', vim.log.levels.WARN)
+  vim.notify('WARNING - main.shada.tmp.X files exist.', vim.log.levels.WARN)
   vim.notify('  ', vim.log.levels.WARN)
   vim.notify('Consider deleting them or investigating the problem.', vim.log.levels.WARN)
   vim.notify('  ', vim.log.levels.WARN)
