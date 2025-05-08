@@ -407,21 +407,7 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is built to understand a
-      -- particular language. These Language Servers are standalone processes
-      -- that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Find references
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
+      -- Language Servers are external tools that must be installed separately from
       -- Neovim. This is where `mason` and related plugins come into play.
       --
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
@@ -564,7 +550,7 @@ require('lazy').setup({
                   'std::hash::Hash',
                   'std::cmp::PartialOrd',
                   'std::cmp::PartialEq',
-                  'std::clone::Clone',
+                  --'std::clone::Clone',
                 },
               },
             },
@@ -614,6 +600,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'prettierd', -- Used to format HTML
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -673,6 +660,8 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        json = { 'jq' },
+        html = { 'prettierd' },
       },
     },
   },
