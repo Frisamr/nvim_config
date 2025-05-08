@@ -607,6 +607,7 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        automatic_enable = false,
         ensure_installed = {}, -- explicitly set to empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
