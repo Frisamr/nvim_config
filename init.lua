@@ -1,8 +1,10 @@
 -- I have marked personal notes with 'PNOTE:'
+--
 -- This is kinda dumb, but I'll change it when I come up with a better idea.
 --[[
   LEFTOVER KICKSTART GUIDANCE:
 
+  Next, run AND READ `:help`.
     This will open up a help window with some basic information
     about reading, navigating and searching the builtin help documentation.
 
@@ -537,7 +539,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         rust_analyzer = {
           settings = {
             ['rust-analyzer'] = {
@@ -605,8 +607,8 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = { 'lua_ls' },
-        automatic_installation = { exclude = { 'rust_analyzer' } },
+        ensure_installed = {}, -- explicitly set to empty table (Kickstart populates installs via mason-tool-installer)
+        automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -858,10 +860,12 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      -- PNOTE: I have removed 'bash' and 'hmtl' because I don't really use them. I should maybe add powershell.
-      ensure_installed = { 'diff', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'c', 'zig' },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
+      -- PNOTE: I should maybe add powershell.
+      -- CSS is inluded for FireFox customisation
+      ensure_installed = { 'diff', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'c', 'zig', 'python', 'arduino', 'css' },
+      -- PNOTE: autoinstall is kinda annoying as it spins up a C compiler
+      -- every time it wants to autoinstall a new TS parser
+      auto_install = false,
       highlight = {
         enable = true,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
