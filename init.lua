@@ -601,6 +601,7 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        'rust-analyzer',
         'stylua', -- Used to format Lua code
         'prettierd', -- Used to format HTML
       })
@@ -862,7 +863,23 @@ require('lazy').setup({
     opts = {
       -- PNOTE: I should maybe add powershell.
       -- CSS is inluded for FireFox customisation
-      ensure_installed = { 'diff', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'rust', 'c', 'zig', 'python', 'arduino', 'css' },
+      ensure_installed = {
+        'diff',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'rust',
+        'c',
+        'zig',
+        'python',
+        'arduino',
+        'cpp',
+        'css',
+      },
       -- PNOTE: autoinstall is kinda annoying as it spins up a C compiler
       -- every time it wants to autoinstall a new TS parser
       auto_install = false,
